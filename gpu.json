@@ -1,0 +1,61 @@
+{
+    "taskGroups": [
+        {
+            "taskSpec": {
+                "runnables": [
+                    {
+                        "script": {
+                            "text": "wget https://developer.download.nvidia.com/compute/cuda/12.4.1/local_installers/cuda-repo-debian11-12-4-local_12.4.1-550.54.15-1_amd64.deb\n
+sudo dpkg -i cuda-repo-debian11-12-4-local_12.4.1-550.54.15-1_amd64.deb\n
+sudo cp /var/cuda-repo-debian11-12-4-local/cuda-*-keyring.gpg /usr/share/keyrings/\n
+sudo add-apt-repository contrib\n
+sudo apt-get update\n
+sudo apt-get -y install cuda-toolkit-12-4\n
+export PATH=$PATH:/usr/local/cuda/bin/\n
+cd $HOME\n
+pwd\n
+sudo apt-get install -y git\n
+git clone https://github.com/NVIDIA/cuda-samples\n
+cd $HOME/cuda-samples/Samples/0_Introduction/matrixMul\n
+pwd\n
+make\n
+./matrixMul\n
+
+cd $HOME/cuda-samples/Samples/1_Utilities/deviceQuery\n
+pwd\n
+make\n
+./deviceQuery\n
+			    "
+                        }
+                    }
+                ]
+            },
+            "taskCount": 1,
+            "parallelism": 1
+        }
+    ],
+    "allocationPolicy": {
+        "instances": [
+            {
+                "installGpuDrivers": true,
+                "policy": {
+                    "accelerators": [
+                        {
+                            "type": "nvidia-tesla-t4",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        ],
+        "location": {
+            "allowedLocations": [
+                "regions/us-central1"
+            ]
+        }
+    },
+    "logsPolicy": {
+        "destination": CLOUD_LOGGING
+    }
+}
+
