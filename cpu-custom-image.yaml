@@ -1,0 +1,29 @@
+taskGroups:
+  - taskSpec:
+      runnables:
+        - script:
+            text: |
+              hostname
+              cat /etc/os-release
+              sysbench cpu run
+    taskCount: 1
+    parallelism: 1
+
+allocationPolicy:
+  instances:
+    - installGpuDrivers: true
+      policy:
+        machineType: e2-standard-2
+        provisioningModel: SPOT
+        bootDisk:
+          type: pd-ssd
+          sizeGb: 50
+          image:  projects/<project-id>/global/images/<image-name>
+  location:
+    allowedLocations:
+      - regions/us-central1
+
+logsPolicy:
+  destination: CLOUD_LOGGING
+
+
